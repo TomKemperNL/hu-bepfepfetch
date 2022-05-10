@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax Smaakjes</title>
+</head>
+<body>
+<header>
+    <h1>Ajax Demos</h1>
+    <div>Lelijk als de nacht</div>
+</header>
+<main>
+    <h2>Het form naar een rauweServlet</h2>
+    <form action="/rauwePost" method="POST">
+        <ul>
+            <li>
+                <label>Test1: <input type="text" name="test1"/></label>
+            </li>
+            <li>
+                <label>Test2: <input type="text" name="test2"/></label>
+            </li>
+        </ul>
+        <button type="submit">Rauwe Post naar Servlet</button>
+    </form>
+
+    <h2>Het form naar een Jersey Resource</h2>
+    <form action="/jersey/rauw" method="POST">
+        <ul>
+            <li>
+                <label>Test1: <input type="text" name="test1"/></label>
+            </li>
+            <li>
+                <label>Test2: <input type="text" name="test2"/></label>
+            </li>
+        </ul>
+        <button type="submit">Rauwe Post naar een Jersey Resource</button>
+    </form>
+
+    <h2>Met Fetch zoals de slides van Les 7 BEP</h2>
+    <form name="slides-7-fetch-1">
+        <ul>
+            <li>
+                <label>Test1: <input type="text" name="test1"/></label>
+            </li>
+            <li>
+                <label>Test2: <input type="text" name="test2"/></label>
+            </li>
+        </ul>
+        <button id="slides-7-fetch-1-btn">Fetch Post naar een Jersey Resource</button>
+    </form>
+
+    <h2>Met Fetch zoals de uitwerkingen van FEP Web01</h2>
+    <form name="slides-7-fetch-2">
+        <ul>
+            <li>
+                <label>Test1: <input type="text" name="test1"/></label>
+            </li>
+            <li>
+                <label>Test2: <input type="text" name="test2"/></label>
+            </li>
+        </ul>
+        <button id="slides-7-fetch-2-btn">Fetch Post naar een Jersey Resource</button>
+    </form>
+
+    <h2>Met Fetch zoals de voorbeeldcode van FEP JS03</h2>
+    <form name="slides-7-fetch-3">
+        <ul>
+            <li>
+                <label>Test1: <input type="text" name="test1"/></label>
+            </li>
+            <li>
+                <label>Test2: <input type="text" name="test2"/></label>
+            </li>
+        </ul>
+        <button id="slides-7-fetch-3-btn">Fetch Post naar een Jersey Resource</button>
+    </form>
+
+</main>
+
+<script>
+    console.log('wuuuuut');
+    document.getElementById('slides-7-fetch-1-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        let frm = document.forms['slides-7-fetch-1'];
+        let frmData = new FormData(frm);
+        let encoded = new URLSearchParams(frmData.entries());
+        fetch('/jersey/formencoded', {method: 'POST', body: encoded}).then(r => r.text()).then(t => alert(t));
+    });
+
+
+    document.getElementById('slides-7-fetch-2-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        let frm = document.forms['slides-7-fetch-2'];
+        let frmData = new FormData(frm);
+        fetch('/jersey/multipart', {method: 'POST', body: frmData}).then(r => r.text()).then(t => alert(t));
+    });
+
+    document.getElementById('slides-7-fetch-3-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        let frm = document.forms['slides-7-fetch-3'];
+        fetch('/jersey/json', {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST', body: JSON.stringify({
+                test1: frm.test1.value,
+                test2: frm.test2.value
+            })
+        }).then(r => r.json()).then(j => alert(JSON.stringify(j)));
+
+    });
+</script>
+</body>
+</html>
